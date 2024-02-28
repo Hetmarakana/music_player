@@ -29,10 +29,16 @@ class First extends StatefulWidget {
 class _FirstState extends State<First> {
   myclass m = Get.put(myclass());
 
+  late  int curindex;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    curindex=0;
+     myclass.player.onPlayerComplete.listen((event) {
+       next_song();
+     });
     get();
   }
 
@@ -46,6 +52,24 @@ class _FirstState extends State<First> {
       print(status);
     }
     print(status);
+  }
+  next_song()
+  {
+       if(curindex< m.song.length-1)
+         {
+            curindex++;
+            myclass.player.play(DeviceFileSource(
+                m.song.value[curindex].data));
+            m.cur_index.value=curindex;
+
+            m.temp.value = true;
+
+         }
+       else
+         {
+                myclass.player.stop();
+                m.temp.value=false;
+         }
   }
 
   @override
